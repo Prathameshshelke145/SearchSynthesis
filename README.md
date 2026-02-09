@@ -127,6 +127,41 @@ Security note: `streamlit_app.py` contains a hard-coded API key fallback. Rotate
 - `merged_github.py` — GitHub repository loader, language-specific chunking, and Chroma vector store construction.
 - `requirements.txt` — Python dependencies.
 
+Note: Local helper scripts used for diagnostics are intentionally gitignored and not part of the published repository — see [.gitignore](.gitignore).
+
+**Live Demo:** 🚀 Visit the deployed app at https://searchsynthesis.streamlit.app/ to try the interface live.
+
+## Architecture Diagram
+
+The high-level system architecture is shown below. It highlights the Streamlit UI, the main extraction/agent modules, and the external services used (Google Gemini, Tavily, HuggingFace embeddings, GitHub, YouTube, and Chroma vector store).
+
+```mermaid
+flowchart LR
+	U["👤 User (browser)"] --> |uses| S["🖥️ Streamlit App\n(streamlit_app.py)"]
+	S --> MS["🔎 merged_search.py\n(agent orchestration)"]
+	S --> YT["📺 merged_youtube.py\n(transcript & QA)"]
+	S --> GH["🐙 merged_github.py\n(repo extraction & vectordb)"]
+
+	MS -->|queries| TAV["🔗 Tavily Search API"]
+	MS -->|aggregates| EX["📚 External sources\n(YouTube, GitHub, Reddit, X)"]
+
+	YT -->|transcripts| EX
+	GH -->|repo files| EX
+
+	S --> |embeddings/llm| LC["🧠 LangChain adapters"]
+	LC -->|LLM| GG["🤖 Google Gemini / langchain_google_genai"]
+	LC -->|Embeddings| HF["✳️ HuggingFace Embeddings\n(all-MiniLM-L6-v2)"]
+
+	HF --> CH["🗂️ Chroma (vector store)"]
+	GH --> CH
+	YT --> CH
+
+	style S fill:#f9f,stroke:#333,stroke-width:1px
+	style LC fill:#fffae6,stroke:#333
+```
+
+Icons: the README uses emojis to add visual flair to sections and components.
+
 ## API Reference (auto-detected)
 
 This project does not expose an HTTP API; instead it provides Python classes and methods. Detected public APIs:

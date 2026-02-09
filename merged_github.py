@@ -3,8 +3,8 @@ import re
 import cssutils
 from bs4 import BeautifulSoup
 
-from langchain.text_splitter import RecursiveCharacterTextSplitter, Language
-from langchain.vectorstores import Chroma
+from langchain_text_splitters import RecursiveCharacterTextSplitter, Language
+from langchain_community.vectorstores import Chroma
 from langchain_core.documents import Document
 from langchain_community.document_loaders import GithubFileLoader
 

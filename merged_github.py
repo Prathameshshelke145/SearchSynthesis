@@ -9,10 +9,11 @@ from langchain_core.documents import Document
 from langchain_community.document_loaders import GithubFileLoader
 
 class GitHubRepo:
-    def __init__(self, embed, llm, prompt, access_token: str):
+    def __init__(self, embed, llm, prompt, git_type : str, access_token: str):
         self.embed = embed
         self.llm = llm
         self.prompt = prompt
+        self.git_type = git_type
         self.access_token = access_token
         self.vectordbs = {}
     def html_to_code_chunks(self, html_text):
@@ -116,7 +117,7 @@ class GitHubRepo:
         ACCESS_TOKEN = self.access_token
         loader = GithubFileLoader(
             repo=repo_name,
-            branch="main",
+            branch=self.git_type,
             access_token=ACCESS_TOKEN,
             github_api_url="https://api.github.com",
             file_filter=lambda f: f.endswith((

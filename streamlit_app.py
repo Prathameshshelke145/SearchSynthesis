@@ -277,7 +277,7 @@ elif page == "📺 YouTube Analysis":
 elif page == "🐙 GitHub Analysis":
     st.title("🐙 GitHub Repository Analysis - Interactive")
     st.write("Load a repository, then ask continuous questions about the codebase.")
-
+    
     # Session state
     if "gh_instance" not in st.session_state:
         st.session_state.gh_instance = None
@@ -293,12 +293,13 @@ elif page == "🐙 GitHub Analysis":
         value=st.session_state.gh_repo_url
     )
 
-    col1, col2 = st.columns([3, 1])
+    col1, col2,col3 = st.columns([2, 1,1])
     with col1:
         load_repo = st.button("📥 Extract & Load", use_container_width=True)
     with col2:
         clear_chat = st.button("🗑️ Clear Chat", use_container_width=True)
-
+    with col3:
+        git_type = st.selectbox("Git Branch Type", options=["main", "master"], index=0)
     # Load repository
     if load_repo and repo_url.strip():
         with st.spinner("Extracting repository data..."):
@@ -307,6 +308,7 @@ elif page == "🐙 GitHub Analysis":
                     embed=embed,
                     llm=llm1,
                     prompt=git_prompt,
+                    git_type=git_type,
                     access_token=ACCESS_TOKEN
                 )
                 gh.extract(repo_url)

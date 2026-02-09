@@ -1,0 +1,14 @@
+langchain
+langchain-core
+langchain-community
+langchain-google-genai
+requests
+tavily-python
+pytube
+langchain_huggingface
+sentence-transformers
+chromadb
+youtube-transcript-api
+langchain_text_splitters
+cssutils
+bs4

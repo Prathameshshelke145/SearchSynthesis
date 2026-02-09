@@ -50,25 +50,8 @@ st.set_page_config(
 # ============================================================
 load_dotenv()
 
-# API Key setup
-key = "AIzaSyBtubnX9o9iPmMMp3L-oq0-t9-uZdcGh6E"
-if "GOOGLE_API_KEY" not in os.environ:
-    os.environ["GOOGLE_API_KEY"] = key
-
 os.environ["GRPC_VERBOSITY"] = "ERROR"
 os.environ["GRPC_TRACE"] = ""
-
-# Initialize models & embeddings
-@st.cache_resource
-def load_models():
-    llm = ChatGoogleGenerativeAI(
-        model="gemini-2.5-flash",
-        temperature=0,
-    )
-    embed = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
-    return llm, embed
-
-llm1, embed = load_models()
 
 # Initialize Git Prompt
 git_prompt = PromptTemplate(
@@ -124,6 +107,18 @@ page = st.sidebar.radio(
 gemini_api=st.sidebar.text_input("Google Gemini API Key:" )
 tavily_api=st.sidebar.text_input("Tavily API Key:" )
 git_access_token=st.sidebar.text_input("GitHub Access Token:" )
+
+@st.cache_resource
+def load_models():
+    llm = ChatGoogleGenerativeAI(
+        model="gemini-2.5-flash",
+        temperature=0,
+        api_key=gemini_api
+    )
+    embed = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+    return llm, embed
+
+llm1, embed = load_models()
 # ============================================================
 # PAGE: WEB SEARCH
 # ============================================================

@@ -1,9 +1,37 @@
 import streamlit as st
 import os
 from dotenv import load_dotenv
-from langchain_huggingface import HuggingFaceEmbeddings
-from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_core.prompts import PromptTemplate
+
+# PromptTemplate: prefer langchain.prompts, fall back to langchain_core.prompts
+try:
+    from langchain.prompts import PromptTemplate
+except Exception:
+    try:
+        from langchain_core.prompts import PromptTemplate
+    except Exception as e:
+        raise ImportError("PromptTemplate not found in langchain.prompts or langchain_core.prompts") from e
+
+# HuggingFaceEmbeddings: prefer langchain_huggingface package, fall back to langchain.embeddings
+try:
+    from langchain_huggingface import HuggingFaceEmbeddings
+except Exception:
+    try:
+        from langchain.embeddings import HuggingFaceEmbeddings
+    except Exception as e:
+        raise ImportError("HuggingFaceEmbeddings not found in langchain_huggingface or langchain.embeddings") from e
+
+# ChatGoogleGenerativeAI: prefer langchain_google_genai, try a few fallbacks
+try:
+    from langchain_google_genai import ChatGoogleGenerativeAI
+except Exception:
+    try:
+        from langchain.chat_models import ChatGoogleGenerativeAI
+    except Exception:
+        try:
+            # some installs expose a different class name
+            from langchain_google_genai import GoogleGenerativeAI as ChatGoogleGenerativeAI
+        except Exception as e:
+            raise ImportError("ChatGoogleGenerativeAI not found in langchain_google_genai or langchain.chat_models") from e
 from merged_search import search
 from merged_youtube import YouTube
 from merged_github import GitHubRepo

@@ -1,23 +1,14 @@
 from tavily import TavilyClient
 from langchain.tools import tool
 from langchain_core.prompts import PromptTemplate
-from langchain.agents import Tool, create_react_agent 
-from langchain import hub
-from langchain_community.tools import DuckDuckGoSearchRun
-from langchain.agents import AgentExecutor,create_react_agent
-from langchain.tools import tool
+from langchain_classic.agents import create_react_agent, AgentExecutor
+from langchain_classic import hub
 from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_core.tools import InjectedToolArg
 import requests 
 from datetime import datetime
 from langchain_core.documents import Document
 from collections import defaultdict
 import os
-from tavily import TavilyClient
-from langchain.tools import tool
-from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain import hub
-from langchain.agents import create_react_agent, AgentExecutor
 
 
 class search:

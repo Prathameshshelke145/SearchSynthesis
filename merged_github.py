@@ -113,7 +113,7 @@ class GitHubRepo:
         repo_name = link[n:]
         print(f"Extracting from repo: {repo_name}")
 
-        ACCESS_TOKEN = self.access_token or "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"
+        ACCESS_TOKEN = self.access_token
         loader = GithubFileLoader(
             repo=repo_name,
             branch="main",

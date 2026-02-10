@@ -1,3 +1,4 @@
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_community.document_loaders import YoutubeLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import Chroma
@@ -5,9 +6,10 @@ from langchain_core.prompts import PromptTemplate
 
 
 class YouTube():
-    def __init__(self, embed, llm):
+    def __init__(self, embed, llm , api_key: str):
         self.embed = embed
         self.llm = llm
+        self.api_key = api_key
         self.vectordb_store = None
 
     def extract(self, link: str):
@@ -39,12 +41,15 @@ class YouTube():
     def answer(self, query: str):
         if self.vectordb_store is None:
             raise ValueError("Please extract a YouTube video first.")
-
+        youtube_llm = ChatGoogleGenerativeAI(
+            model="gemini-2.5-flash",
+            api_key=self.api_key
+        )
         retriever = self.vectordb_store.as_retriever(
             search_type="mmr",
             search_kwargs={"k": 2, "lambda_mult": 1}
         )
-
+       
         docs = retriever.invoke(query)
         context = " ".join(doc.page_content for doc in docs)
 
@@ -61,5 +66,5 @@ class YouTube():
             context=context
         )
 
-        response = self.llm.invoke(final_prompt)
+        response = youtube_llm.invoke(final_prompt)
         return response.content.replace("\n", " ")

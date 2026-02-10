@@ -38,6 +38,7 @@ class YouTube():
         return "Video processed successfully"
 
     def answer(self,youtube_api_key: str, query: str):
+        #youtube have own api key 
         if self.vectordb_store is None:
             raise ValueError("Please extract a YouTube video first.")
         youtube_llm = ChatGoogleGenerativeAI(

@@ -272,6 +272,7 @@ elif page == "📺 YouTube Analysis":
             if question.strip():
                 with st.spinner("Analyzing..."):
                     try:
+                        #youtube have own api key
                         answer = st.session_state.yt_instance.answer(gemini_api,question)
                         # Add to history
                         st.session_state.yt_history.append((question, answer))

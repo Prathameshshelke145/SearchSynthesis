@@ -225,7 +225,7 @@ elif page == "📺 YouTube Analysis":
     if load_video and video_url.strip():
         with st.spinner("Loading video transcript..."):
             try:
-                st.session_state.yt_instance = YouTube(embed=embed, llm=llm1 , api_key=gemini_api)
+                st.session_state.yt_instance = YouTube(embed=embed, llm=llm1)
                 st.session_state.yt_instance.extract(video_url)
                 st.session_state.yt_url = video_url
                 st.session_state.yt_history = []  # Reset chat history
@@ -272,7 +272,7 @@ elif page == "📺 YouTube Analysis":
             if question.strip():
                 with st.spinner("Analyzing..."):
                     try:
-                        answer = st.session_state.yt_instance.answer(question)
+                        answer = st.session_state.yt_instance.answer(gemini_api,question)
                         # Add to history
                         st.session_state.yt_history.append((question, answer))
                         st.rerun()

@@ -11,11 +11,10 @@ from langchain_core.documents import Document
 from langchain_community.document_loaders import GithubFileLoader
 
 class GitHubRepo:
-    def __init__(self, embed, llm, prompt, api_key : str , git_type : str, access_token: str):
+    def __init__(self, embed, llm, prompt, git_type : str, access_token: str):
         self.embed = embed
         self.llm = llm
         self.prompt = prompt
-        self.api_key = api_key
         self.git_type = git_type
         self.access_token = access_token
         self.vectordbs = {}
@@ -211,12 +210,12 @@ class GitHubRepo:
         self.vectordbs = vectordb_map
         return vectordb_map
        
-    def answer(self,query: str):
+    def answer(self,git_hub_key:str,query: str):
         # if self.llm is None:
         #     raise ValueError("LLM is not initialized. Check API key or model loading.")
         githun_llm = ChatGoogleGenerativeAI(
             model="gemini-2.5-flash",
-            api_key=self.api_key
+            api_key=git_hub_key
         )
         context_dict = {}
 

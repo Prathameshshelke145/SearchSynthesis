@@ -325,8 +325,7 @@ elif page == "🐙 GitHub Analysis":
                     llm=llm1,
                     prompt=git_prompt,
                     git_type=git_type,
-                    access_token=ACCESS_TOKEN,
-                    api_key=gemini_api
+                    access_token=ACCESS_TOKEN
                 )
                 gh.extract(repo_url)
                 st.session_state.gh_instance = gh
@@ -363,7 +362,7 @@ elif page == "🐙 GitHub Analysis":
             if question.strip():
                 with st.spinner("Analyzing repository..."):
                     try:
-                        answer = st.session_state.gh_instance.answer(question)
+                        answer = st.session_state.gh_instance.answer(gemini_api,question)
                         st.session_state.gh_history.append((question, answer))
                         st.rerun()
                     except Exception as e:

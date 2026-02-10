@@ -32,6 +32,16 @@ except Exception:
             from langchain_google_genai import GoogleGenerativeAI as ChatGoogleGenerativeAI
         except Exception as e:
             raise ImportError("ChatGoogleGenerativeAI not found in langchain_google_genai or langchain.chat_models") from e
+        
+@st.cache_resource
+def load_embeddings_model():
+    try:
+        embed = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+        return embed
+    except Exception as e:
+        st.error(f"Error loading embeddings: {str(e)}")
+        return None
+embed = load_embeddings_model()            
 from merged_search import search
 from merged_youtube import YouTube
 from merged_github import GitHubRepo
@@ -108,17 +118,23 @@ gemini_api=st.sidebar.text_input("Google Gemini API Key:" )
 tavily_api=st.sidebar.text_input("Tavily API Key:" )
 git_access_token=st.sidebar.text_input("GitHub Access Token:" )
 
+
 @st.cache_resource
 def load_models():
-    llm = ChatGoogleGenerativeAI(
-        model="gemini-2.5-flash",
-        temperature=0,
-        api_key=gemini_api
-    )
-    embed = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
-    return llm, embed
+    try :
+        llm = ChatGoogleGenerativeAI(
+            model="gemini-2.5-flash",
+            temperature=0,
+            api_key=gemini_api
+        )
+        # embed = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+        return llm
+    except Exception as e:
+        st.info(f"For loading models: First enter valid API keys in the sidebar then start using the tools.")
+        return None
 
-llm1, embed = load_models()
+
+llm1 = load_models()
 # ============================================================
 # PAGE: WEB SEARCH
 # ============================================================

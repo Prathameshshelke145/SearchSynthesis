@@ -225,7 +225,7 @@ elif page == "📺 YouTube Analysis":
     if load_video and video_url.strip():
         with st.spinner("Loading video transcript..."):
             try:
-                st.session_state.yt_instance = YouTube(embed=embed, llm=llm1)
+                st.session_state.yt_instance = YouTube(embed=embed, llm=llm1 , api_key=gemini_api)
                 st.session_state.yt_instance.extract(video_url)
                 st.session_state.yt_url = video_url
                 st.session_state.yt_history = []  # Reset chat history
@@ -325,7 +325,8 @@ elif page == "🐙 GitHub Analysis":
                     llm=llm1,
                     prompt=git_prompt,
                     git_type=git_type,
-                    access_token=ACCESS_TOKEN
+                    access_token=ACCESS_TOKEN,
+                    api_key=gemini_api
                 )
                 gh.extract(repo_url)
                 st.session_state.gh_instance = gh

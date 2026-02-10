@@ -6,10 +6,9 @@ from langchain_core.prompts import PromptTemplate
 
 
 class YouTube():
-    def __init__(self, embed, llm , api_key: str):
+    def __init__(self, embed, llm) :
         self.embed = embed
         self.llm = llm
-        self.api_key = api_key
         self.vectordb_store = None
 
     def extract(self, link: str):
@@ -38,12 +37,12 @@ class YouTube():
 
         return "Video processed successfully"
 
-    def answer(self, query: str):
+    def answer(self,youtube_api_key: str, query: str):
         if self.vectordb_store is None:
             raise ValueError("Please extract a YouTube video first.")
         youtube_llm = ChatGoogleGenerativeAI(
             model="gemini-2.5-flash",
-            api_key=self.api_key
+            api_key=youtube_api_key
         )
         retriever = self.vectordb_store.as_retriever(
             search_type="mmr",
